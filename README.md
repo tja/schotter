@@ -1,9 +1,13 @@
+<p align="center"><img width="800" src="images/header.jpg"></a></p>
+
 # Schotter
 
 **Schotter** will generate line art inspired by [Georg Nees](https://en.wikipedia.org/wiki/Georg_Nees)' graphic
-[*Gravel*](https://collections.vam.ac.uk/item/O221321/schotter-print-nees-georg/) (*Schotter* in German).
+[*Gravel*](https://collections.vam.ac.uk/item/O221321/schotter-print-nees-georg/) (*Schotter* in German). The
+resulting SVG images can be used to drive a plotter &mdash; such as [Evil Mad Scientist's
+AxiDraw](https://axidraw.com) &mdash; to create beautiful pieces of art.
 
-<p align="center"><img width="800" src="images/header.jpg"></a></p>
+<p align="center"><img width="800" src="images/axidraw.jpg"></a></p>
 
 ## Installation
 
