@@ -26,7 +26,7 @@ func main() {
 		Use:     "schotter",
 		Long:    "Generate digital line art, inspired by Georg Nees' \"Schotter\".",
 		Args:    cobra.ExactArgs(1),
-		Version: "0.0.1",
+		Version: "1.0.0",
 		Run:     schotter,
 	}
 
