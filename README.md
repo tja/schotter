@@ -3,6 +3,8 @@
 **Schotter** will generate line art inspired by [Georg Nees](https://en.wikipedia.org/wiki/Georg_Nees)' graphic
 [*Gravel*](https://collections.vam.ac.uk/item/O221321/schotter-print-nees-georg/) (*Schotter* in German).
 
+<p align="center"><img width="800" src="images/header.jpg"></a></p>
+
 ## Installation
 
 Pre-built binaries are available on the [release page](https://github.com/tja/schotter/releases/latest). Simply
