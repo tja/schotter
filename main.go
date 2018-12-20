@@ -86,8 +86,8 @@ func schotter(cmd *cobra.Command, args []string) {
 		for x := 0; x < col; x++ {
 			// Create randomness
 			var (
-				offsetX = (rand.Float64()*2 - 1) * factor / 100.0 // Horizontal random offset
-				offsetY = (rand.Float64()*2 - 1) * factor / 100.0 // Vertical random offset
+				offsetX = (rand.Float64()*2 - 1) * factor / 100.0 // Random horizontal offset
+				offsetY = (rand.Float64()*2 - 1) * factor / 100.0 // Random vertical offset
 				rotate  = (rand.Float64()*2 - 1) * factor / 2.0   // Random rotation
 			)
 
@@ -98,7 +98,11 @@ func schotter(cmd *cobra.Command, args []string) {
 				rotate,
 			)
 
-			canvas.Rect(0, 0, int(size), int(size),
+			canvas.Rect(
+				0,
+				0,
+				int(size),
+				int(size),
 				"fill:none;stroke:black",
 			)
 
