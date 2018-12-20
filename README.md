@@ -1,5 +1,10 @@
 <p align="center"><img width="800" src="images/header.jpg"></a></p>
 
+<p align="center">
+  <a href="https://goreportcard.com/report/github.com/tja/schotter"><img src="https://goreportcard.com/badge/github.com/tja/schotter" alt="Go Report Card"></a>
+  <a href="https://github.com/tja/schotter/blob/master/LICENSE"><img src="http://img.shields.io/badge/license-MIT-brightgreen.svg" alt="MIT License"></a>
+</p>
+
 # Schotter
 
 **Schotter** will generate line art inspired by [Georg Nees](https://en.wikipedia.org/wiki/Georg_Nees)' graphic
