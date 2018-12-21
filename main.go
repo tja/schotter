@@ -1,67 +1,54 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"math/rand"
 	"os"
 	"time"
 
-	"github.com/ajstarks/svgo"
+	svg "github.com/ajstarks/svgo"
 	"github.com/fatih/color"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
+	"github.com/spf13/pflag"
 )
 
 // Main entry point.
 func main() {
-	// Print banner
-	color.HiCyan("             __          __   __              ")
-	color.HiCyan(".-----.-----|  |--.-----|  |_|  |_.-----.-.--.")
-	color.HiCyan("|__ --|  ---|  .  |  -  |   _|   _|  -__|  .-'")
-	color.HiCyan("|_____|_____|__|__|_____|____|____|_____|__|  ")
-	color.HiCyan("                                              ")
-
-	// Command definition
-	cmd := &cobra.Command{
-		Use:     "schotter",
-		Long:    "Generate digital line art, inspired by Georg Nees' \"Schotter\".",
-		Args:    cobra.ExactArgs(1),
-		Version: "1.0.0",
-		Run:     schotter,
-	}
-
-	cmd.Flags().IntP("columns", "c", 10, "Number of columns")
-	cmd.Flags().IntP("rows", "r", 20, "Number of rows")
-	cmd.Flags().Float64P("size", "s", 100.0, "Size of each square")
-	cmd.Flags().Float64P("margin", "m", 100.0, "Margin around all squares")
-	cmd.Flags().Float64P("orderliness", "o", 8.0, "Amount of orderlines, higher ist more ordered")
-
-	// Read viper config
-	viper.BindPFlags(cmd.Flags())
-
-	viper.SetConfigName("config")
-	viper.AddConfigPath("$HOME/.config/schotter")
-	viper.AddConfigPath(".")
-
-	viper.ReadInConfig()
-
-	// Run command
-	cmd.Execute()
-}
-
-// schotter is called when all arguments are properly set.
-func schotter(cmd *cobra.Command, args []string) {
-	// Read configuration
+	// Command line
 	var (
-		row    = viper.GetInt("rows")
-		col    = viper.GetInt("columns")
-		size   = viper.GetFloat64("size")
-		margin = viper.GetFloat64("margin")
-		order  = viper.GetFloat64("orderliness")
+		row     = pflag.IntP("columns", "c", 10, "Number of columns")
+		col     = pflag.IntP("rows", "r", 20, "Number of rows")
+		size    = pflag.Float64P("size", "s", 100.0, "Size of each square")
+		margin  = pflag.Float64P("margin", "m", 100.0, "Margin around all squares")
+		order   = pflag.Float64P("orderliness", "o", 8.0, "Amount of orderlines, higher ist more ordered")
+		help    = pflag.BoolP("help", "h", false, "Help for schotter")
+		version = pflag.Bool("version", false, "Version of schotter")
 	)
 
+	pflag.Parse()
+
+	if *help {
+		printBanner()
+		fmt.Println("Generate digital line art, inspired by Georg Nees' \"Schotter\".")
+		fmt.Println("")
+		printHelp()
+		os.Exit(0)
+	}
+
+	if *version {
+		fmt.Println("schotter version 1.0.0")
+		os.Exit(0)
+	}
+
+	if len(pflag.Args()) != 1 {
+		fmt.Println("Error: Output filename missing.")
+		os.Exit(2)
+	}
+
+	printBanner()
+
 	// Open output file
-	out, err := os.Create(args[0])
+	out, err := os.Create(pflag.Arg(0))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -71,8 +58,8 @@ func schotter(cmd *cobra.Command, args []string) {
 	// Create SVG canvas
 	canvas := svg.New(out)
 	canvas.Start(
-		int(2.0*margin+float64(col)*size),
-		int(2.0*margin+float64(row)*size),
+		int(2.0*(*margin)+float64(*col)*(*size)),
+		int(2.0*(*margin)+float64(*row)*(*size)),
 	)
 
 	defer canvas.End()
@@ -80,10 +67,10 @@ func schotter(cmd *cobra.Command, args []string) {
 	// Generate random Schotter art
 	rand.Seed(time.Now().UnixNano())
 
-	for y := 0; y < row; y++ {
-		factor := float64(y*y+y) / order
+	for y := 0; y < (*row); y++ {
+		factor := float64(y*y+y) / (*order)
 
-		for x := 0; x < col; x++ {
+		for x := 0; x < (*col); x++ {
 			// Create randomness
 			var (
 				offsetX = (rand.Float64()*2 - 1) * factor / 100.0 // Random horizontal offset
@@ -93,20 +80,41 @@ func schotter(cmd *cobra.Command, args []string) {
 
 			// Draw rotated and translated square
 			canvas.TranslateRotate(
-				int(margin+(float64(x)+offsetX)*size),
-				int(margin+(float64(y)+offsetY)*size),
+				int((*margin)+(float64(x)+offsetX)*(*size)),
+				int((*margin)+(float64(y)+offsetY)*(*size)),
 				rotate,
 			)
 
 			canvas.Rect(
 				0,
 				0,
-				int(size),
-				int(size),
+				int(*size),
+				int(*size),
 				"fill:none;stroke:black",
 			)
 
 			canvas.Gend()
 		}
 	}
+
+	fmt.Println("Successfully created output file", pflag.Arg(0))
+}
+
+// Print banner
+func printBanner() {
+	color.HiCyan("             __          __   __              ")
+	color.HiCyan(".-----.-----|  |--.-----|  |_|  |_.-----.-.--.")
+	color.HiCyan("|__ --|  ---|  .  |  -  |   _|   _|  -__|  .-'")
+	color.HiCyan("|_____|_____|__|__|_____|____|____|_____|__|  ")
+	color.HiCyan("                                              ")
+}
+
+// Print help screen
+func printHelp() {
+	fmt.Println("Usage:")
+	fmt.Println("  schotter [flags] file")
+	fmt.Println("")
+	fmt.Println("Flags:")
+
+	pflag.PrintDefaults()
 }
