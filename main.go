@@ -36,7 +36,7 @@ func main() {
 	}
 
 	if *version {
-		fmt.Println("schotter version 1.0.0")
+		fmt.Println("schotter version 1.1.0")
 		os.Exit(0)
 	}
 

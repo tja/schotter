@@ -20,7 +20,7 @@ Pre-built binaries are available on the [release page](https://github.com/tja/sc
 download, make executable, and move it to a folder in your `PATH`:
 
 ```bash
-curl -L https://github.com/tja/schotter/releases/download/v1.0.0/schotter-`uname -s`-`uname -m` >/tmp/schotter
+curl -L https://github.com/tja/schotter/releases/download/v1.1.0/schotter-`uname -s`-`uname -m` >/tmp/schotter
 chmod +x /tmp/schotter
 sudo mv /tmp/schotter /usr/local/bin/schotter
 ```
